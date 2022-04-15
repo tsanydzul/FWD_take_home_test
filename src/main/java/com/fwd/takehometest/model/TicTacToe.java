@@ -7,6 +7,7 @@ public class TicTacToe {
     boolean isPlayerOneTurn;
     int boardSize;
     String[][] boardMark;
+    String[] boardEachRow;
 
     public TicTacToe(){
         this.isPlayerOneTurn = true;
@@ -54,5 +55,16 @@ public class TicTacToe {
                 this.boardMark[row][col] = Constant.PLAYERTWOMARK;
                 break;
         }
+    }
+
+    public String[] getBoardEachRow() {
+        return boardEachRow;
+    }
+
+    public void setBoardEachRow(String[] boardEachRow) {
+        this.boardEachRow = boardEachRow;
+    }
+    public void setBoardEachRowIndex(String input, int index) {
+        this.boardEachRow[index] = input;
     }
 }

@@ -18,18 +18,25 @@ public class GameController {
     final DrawerImpl drawer = new DrawerImpl(System.in);
     final InputValidatorImpl inputValidator = new InputValidatorImpl();
     final TicTacToe ticTacToe = new TicTacToe();
+    final Play play = new Play(drawer, inputValidator, ticTacToe);
 
     @RequestMapping("/")
     public String home(Map<String, Object> model) {
-		final Play play = new Play(drawer, inputValidator, ticTacToe);
         model.put("message", "this.message");
         return "index";
     }
 
     @RequestMapping("/boardsize/{size}")
     public String boardsize(Map<String, Object> model, @PathVariable String size) {
-        final Play play = new Play(drawer, inputValidator, ticTacToe);
+        play.initiate(size, model);
         model.put("message", size);
+        return "index";
+    }
+
+    @RequestMapping("/coordinate/{coordinate}")
+    public String coordinate(Map<String, Object> model, @PathVariable String coordinate) {
+        play.start(coordinate, model);
+        model.put("message", coordinate);
         return "index";
     }
 

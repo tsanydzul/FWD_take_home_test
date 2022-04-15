@@ -22,16 +22,30 @@ public class DrawerImpl implements Drawer {
         final int boundaries = ticTacToe.getBoardSize() * 2 + 1;
         final String horizontalLine = String.join(" ", nCopies(boundaries, "--"));
 
+        ticTacToe.setBoardEachRow(new String[boundaries]);
+
         System.out.println(horizontalLine);
+        ticTacToe.setBoardEachRowIndex(horizontalLine,0);
+        int rowToFill = 1;
         for (int row = 0; row < ticTacToe.getBoardSize(); row++) {
+            StringBuilder boardRow = new StringBuilder();
+            boardRow.append("| ");
             System.out.print("| ");
             for (int col = 0; col < ticTacToe.getBoardSize(); col++) {
                 System.out.print(ticTacToe.getBoardMark()[row][col]);
                 System.out.print(" | ");
+
+                boardRow.append(ticTacToe.getBoardMark()[row][col]).append(" | "); ;
             }
+            ticTacToe.setBoardEachRowIndex(new String(boardRow),rowToFill);
+            rowToFill++;
+
             System.out.println();
             System.out.println(horizontalLine);
             System.out.println();
+
+            ticTacToe.setBoardEachRowIndex(horizontalLine,rowToFill);
+            rowToFill++;
         }
     }
 

@@ -13,8 +13,10 @@ public class Constant {
     public static final String PLAYERTWO = "TWO";
     public static final String DEFAULT = "DEFAULT";
     public static final String DEFAULTCOORDINATE = "0,0";
-    public static final String BLANK = "   ";
+    public static final String BLANK = "     ";
     public static final String WINNER = " is the winner!!";
     public static final String ALLFILLED = "Tie !! All field is filled without a winner";
+    public static final String TOOSMALL = "Board size cant be less than 3";
+
 
 }

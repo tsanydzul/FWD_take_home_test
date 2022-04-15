@@ -5,6 +5,8 @@ import com.fwd.takehometest.model.TicTacToe;
 import com.fwd.takehometest.service.Drawer;
 import com.fwd.takehometest.service.InputValidator;
 
+import java.util.Map;
+
 public class Play {
     private final Drawer drawer;
     private final InputValidator inputValidator;
@@ -17,25 +19,19 @@ public class Play {
         this.ticTacToe = ticTacToe;
     }
 
-    public void start() {
-        boolean isBoardSizeValid = false;
-        String boardSize = null;
-
-        while(!isBoardSizeValid){
-            boardSize = drawer.getBoardSize();
-            if(inputValidator.isNumber(boardSize)){
-                isBoardSizeValid = true;
-                ticTacToe.setBoardSize(Integer.parseInt(boardSize));
-                ticTacToe.buildFresh();
-                drawer.drawBoard(ticTacToe);
-            }
+    public void initiate(String boardSize, Map<String, Object> model) {
+        if(inputValidator.isNumber(boardSize, model)){
+            ticTacToe.setBoardSize(Integer.parseInt(boardSize));
+            ticTacToe.buildFresh();
+            drawer.drawBoard(ticTacToe);
+            model.put("board", ticTacToe.getBoardEachRow());
         }
+        model.put("player", ticTacToe.isPlayerOneTurn());
+    }
 
-        boolean playing = true;
-        while(playing){
-            playerTurn();
-            playing = !isGameOver();
-        }
+    public void start(String coordinate, Map<String, Object> model){
+        playerTurn(coordinate, model);
+        isGameOver();
     }
 
     void assignMove(String coordinate, String player){
@@ -46,22 +42,22 @@ public class Play {
         ticTacToe.assignMove(x, y, player);
     }
 
-    void playerTurn(){
-        String coordinate = null;
+    void playerTurn(String coordinate, Map<String, Object> model){
         if(ticTacToe.isPlayerOneTurn()){
             player = Constant.PLAYERONE;
         }else{
             player = Constant.PLAYERTWO;
         }
-        coordinate = drawer.getCoordinate(player);
-        if(inputValidator.isCoordinateValid(coordinate, ticTacToe) && inputValidator.isCoordinateFree(coordinate,ticTacToe)) {
+        if(inputValidator.isCoordinateValid(coordinate, ticTacToe, model) && inputValidator.isCoordinateFree(coordinate,ticTacToe, model)) {
             assignMove(coordinate, player);
             drawer.drawBoard(ticTacToe);
             ticTacToe.setPlayerOneTurn(!ticTacToe.isPlayerOneTurn());
         }
+        model.put("board", ticTacToe.getBoardEachRow());
+        model.put("player", ticTacToe.isPlayerOneTurn());
     }
 
-    boolean isGameOver(){
+    void isGameOver(){
         String[][] board = ticTacToe.getBoardMark();
 
         boolean isAllFilled = true;
@@ -105,6 +101,5 @@ public class Play {
         }else if(isAllFilled){
             drawer.allFilled();
         }
-        return isRowWin || isColWin || isCrossTopWin || isCrossBotWin || isAllFilled;
     }
 }
